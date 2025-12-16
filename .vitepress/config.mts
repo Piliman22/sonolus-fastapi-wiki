@@ -25,7 +25,8 @@ export default defineConfig({
           { text: 'ハンドラ', link: '/Specifications/Handlers' },
           { text: 'サーバー' , link: '/Specifications/Server' },
           { text: 'アイテム', link: '/Specifications/Items' },
-          { text: 'パック', link: '/Specifications/Packs' }
+          { text: 'パック', link: '/Specifications/Packs' },
+          { text: '例', link: '/Specifications/Examples' },
         ]
       }
     ],
