@@ -26,6 +26,7 @@ export default defineConfig({
           { text: 'サーバー' , link: '/Specifications/Server' },
           { text: 'アイテム', link: '/Specifications/Items' },
           { text: 'パック', link: '/Specifications/Packs' },
+          { text: 'SPA配信', link: '/Specifications/SPA' },
           { text: '例', link: '/Specifications/Examples' },
         ]
       }

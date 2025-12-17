@@ -65,5 +65,5 @@ sonolus = Sonolus(
     dev=True,
 )
 
-@sonolus.level.list(ServerItemDetails) # 例でlevelとしたが、level以外も可
+@sonolus.level.detail(ServerItemDetails) # 例でlevelとしたが、level以外も可
 ```
