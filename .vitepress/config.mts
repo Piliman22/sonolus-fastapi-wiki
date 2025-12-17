@@ -29,6 +29,13 @@ export default defineConfig({
           { text: 'SPA配信', link: '/Specifications/SPA' },
           { text: '例', link: '/Specifications/Examples' },
         ]
+      },
+      {
+        text: 'バージョン履歴',
+        items: [
+          { text: '0.1.1', link: '/Version/0-1-1' },
+          { text: '0.1.0', link: '/Version/0-1-0' }
+        ]
       }
     ],
 
