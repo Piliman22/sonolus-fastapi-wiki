@@ -10,7 +10,7 @@ hero:
   actions:
     - theme: brand
       text: クイックスタート
-      link: /quickstart
+      link: /QuickStart/
     - theme: alt
       text: 仕様・設計を見る
       link: /Specifications/
