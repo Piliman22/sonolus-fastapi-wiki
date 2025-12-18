@@ -13,7 +13,7 @@ pip install sonolus-fastapi
 from sonolus_fastapi import Sonolus
 
 sonolus = Sonolus(
-    port=8000
+    port=8000,
     dev=True
 )
 
@@ -31,7 +31,7 @@ from sonolus_fastapi import Sonolus
 from sonolus_fastapi.model.base import SonolusServerInfo, SonolusConfiguration, SonolusButton, SonolusButtonType
 
 sonolus = Sonolus(
-    port=8000
+    port=8000,
     dev=True
 )
 
