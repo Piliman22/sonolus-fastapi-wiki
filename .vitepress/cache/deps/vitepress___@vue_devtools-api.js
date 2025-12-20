@@ -2532,6 +2532,7 @@ function toRaw(observed) {
   ];
   return raw ? toRaw(raw) : observed;
 }
+var Fragment = Symbol.for("v-fgt");
 var StateEditor = class {
   constructor() {
     this.refEditor = new RefStateEditor();

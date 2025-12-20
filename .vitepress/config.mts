@@ -27,12 +27,14 @@ export default defineConfig({
           { text: 'アイテム', link: '/Specifications/Items' },
           { text: 'パック', link: '/Specifications/Packs' },
           { text: 'SPA配信', link: '/Specifications/SPA' },
+          { text: 'ストレージ', link: '/Specifications/Storage' },
           { text: '例', link: '/Specifications/Examples' },
         ]
       },
       {
         text: 'バージョン履歴',
         items: [
+          { text: '0.2.0', link: '/Version/0-2-0' },
           { text: '0.1.1', link: '/Version/0-1-1' },
           { text: '0.1.0', link: '/Version/0-1-0' }
         ]

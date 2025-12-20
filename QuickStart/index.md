@@ -13,8 +13,12 @@ pip install sonolus-fastapi
 from sonolus_fastapi import Sonolus
 
 sonolus = Sonolus(
-    port=8000,
-    dev=True
+    address='https://example.com', # サーバーアドレスを指定してください Specify your server address
+    port=8000, # サーバーポートを指定してください Specify your server port
+    enable_cors=True, # CORSを有効にするかどうか Whether to enable CORS
+    dev=True, # 開発モード Development mode
+    session_store=MemorySessionStore(), # セッションストアを指定 Specify session store
+    backend=StorageBackend.MEMORY # ストレージバックエンドを指定 Specify storage backend
 )
 
 if __name__ == "__main__":
@@ -31,8 +35,12 @@ from sonolus_fastapi import Sonolus
 from sonolus_fastapi.model.base import SonolusServerInfo, SonolusConfiguration, SonolusButton, SonolusButtonType
 
 sonolus = Sonolus(
-    port=8000,
-    dev=True
+    address='https://example.com', # サーバーアドレスを指定してください Specify your server address
+    port=8000, # サーバーポートを指定してください Specify your server port
+    enable_cors=True, # CORSを有効にするかどうか Whether to enable CORS
+    dev=True, # 開発モード Development mode
+    session_store=MemorySessionStore(), # セッションストアを指定 Specify session store
+    backend=StorageBackend.MEMORY # ストレージバックエンドを指定 Specify storage backend
 )
 
 @sonolus.server.server_info(SonolusServerInfo) # サーバー情報ハンドラーを登録 Register server info handler
@@ -84,11 +92,11 @@ post_item = PostItem(
     time=now,
     thumbnail=None,
 )
-sonolus.ItemMemory.Post.push(post_item) # メモリにPostItemを追加 Add PostItem to memory
+sonolus.items.post.add(post_item) # メモリにPostItemを追加 Add PostItem to memory
 
 @sonolus.post.detail(ServerItemDetails) # Postの詳細ハンドラーを登録 Register Post detail handler
 async def get_post_detail(ctx, name: str): # Postの詳細を取得 Get Post details
-    post = sonolus.ItemMemory.Post.get_name(name) # メモリからPostItemを取得 Get PostItem from memory
+    post = sonolus.items.post.get(name) # メモリからPostItemを取得 Get PostItem from memory
     
     if post is None: # PostItemが見つからない場合 If PostItem not found
         raise HTTPException(404, "Post item not found") # 404エラーを返す Return 404 error

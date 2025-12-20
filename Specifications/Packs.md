@@ -13,6 +13,8 @@ sonolus = Sonolus(
     port=8000, # サーバーポートを指定してください Specify your server port
     enable_cors=True, # CORSを有効にするかどうか Whether to enable CORS
     dev=True, # 開発モード Development mode
+    session_store=MemorySessionStore(), # セッションストアを指定 Specify session store
+    backend=StorageBackend.MEMORY # ストレージバックエンドを指定 Specify storage backend
 )
 
 # Sonolusパックを読み込む Load Sonolus pack
