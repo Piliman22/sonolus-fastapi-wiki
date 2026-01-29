@@ -23,7 +23,7 @@ export default defineConfig({
         items: [
           { text: '概要', link: '/Specifications' },
           { text: 'ハンドラ', link: '/Specifications/Handlers' },
-          { text: 'サーバー' , link: '/Specifications/Server' },
+          { text: 'サーバー', link: '/Specifications/Server' },
           { text: 'アイテム', link: '/Specifications/Items' },
           { text: 'パック', link: '/Specifications/Packs' },
           { text: 'SPA配信', link: '/Specifications/SPA' },
@@ -34,6 +34,10 @@ export default defineConfig({
       {
         text: 'バージョン履歴',
         items: [
+          { text: '0.2.3.1', link: '/Version/0-2-3-1' },
+          { text: '0.2.3', link: '/Version/0-2-3' },
+          { text: '0.2.2', link: '/Version/0-2-2' },
+          { text: '0.2.1', link: '/Version/0-2-1' },
           { text: '0.2.0', link: '/Version/0-2-0' },
           { text: '0.1.1', link: '/Version/0-1-1' },
           { text: '0.1.0', link: '/Version/0-1-0' }

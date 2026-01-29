@@ -61,4 +61,25 @@ sonolus = Sonolus(
 sonolus.load(custompackpath) # Sonolus packのパスを指定してください Specify the path to the Sonolus pack
 ```
 
-そして、複数のpackを同時に読み込むことも可能です。
+## Multiple Load
+
+複数のパックをロードすることが可能です。
+
+```py
+from sonolus_fastapi import Sonolus
+from sonolus_fastapi.pack import freepackpath
+from pack import custompackpath
+
+sonolus = Sonolus(
+    address='https://example.com', # サーバーアドレスを指定してください Specify your server address
+    port=8000, # サーバーポートを指定してください Specify your server port
+    enable_cors=True, # CORSを有効にするかどうか Whether to enable CORS
+    dev=True, # 開発モード Development mode
+)
+
+# Sonolusパックを読み込む Load Sonolus pack
+sonolus.load([
+    freepackpath,
+    custompackpath
+]) # Sonolus packのパスを指定してください Specify the path to the Sonolus pack
+```
