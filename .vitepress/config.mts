@@ -46,7 +46,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/Piliman22/sonolus-fastapi/' }
+      { icon: 'github', link: 'https://github.com/Untitled-Sekai/sonolus-fastapi' }
     ]
   }
 })
