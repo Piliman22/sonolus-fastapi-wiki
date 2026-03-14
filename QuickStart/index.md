@@ -1,128 +1,137 @@
 # Quick Start
 
-このページでは**最小限のSonolusサーバー**を立ち上げます。
+このページでは、**最小限のSonolusサーバー**を2通りで立ち上げます。
+
+- FastAPI直利用（従来）
+- APIRouter組み込み（新仕様）
 
 ## インストール
+
 ```bash
 pip install sonolus-fastapi
 ```
 
-## 最小構成
-
-```py
-from sonolus_fastapi import Sonolus
-
-sonolus = Sonolus(
-    address='https://example.com', # サーバーアドレスを指定してください Specify your server address
-    port=8000, # サーバーポートを指定してください Specify your server port
-    enable_cors=True, # CORSを有効にするかどうか Whether to enable CORS
-    dev=True, # 開発モード Development mode
-    session_store=MemorySessionStore(), # セッションストアを指定 Specify session store
-    backend=StorageBackend.MEMORY # ストレージバックエンドを指定 Specify storage backend
-)
-
-if __name__ == "__main__":
-    sonolus.run()
-```
-
-これだけで、FastAPIサーバーが起動します。
-`dev=True`はローカル開発向けの設定です。
-
-## ServerInfoを追加
-
-```py
-from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.base import SonolusServerInfo, SonolusConfiguration, SonolusButton, SonolusButtonType
-
-sonolus = Sonolus(
-    address='https://example.com', # サーバーアドレスを指定してください Specify your server address
-    port=8000, # サーバーポートを指定してください Specify your server port
-    enable_cors=True, # CORSを有効にするかどうか Whether to enable CORS
-    dev=True, # 開発モード Development mode
-    session_store=MemorySessionStore(), # セッションストアを指定 Specify session store
-    backend=StorageBackend.MEMORY # ストレージバックエンドを指定 Specify storage backend
-)
-
-@sonolus.server.server_info(SonolusServerInfo) # サーバー情報ハンドラーを登録 Register server info handler
-async def get_server_info(ctx):
-    return SonolusServerInfo(
-        title="Example Sonolus Server",
-        description="This is an example Sonolus server.",
-        buttons=[
-            SonolusButton(type=SonolusButtonType.AUTHENTICATION),
-            SonolusButton(type=SonolusButtonType.POST),
-            SonolusButton(type=SonolusButtonType.LEVEL),
-            SonolusButton(type=SonolusButtonType.SKIN),
-            SonolusButton(type=SonolusButtonType.BACKGROUND),
-            SonolusButton(type=SonolusButtonType.EFFECT),
-            SonolusButton(type=SonolusButtonType.PARTICLE),
-            SonolusButton(type=SonolusButtonType.ENGINE),
-            SonolusButton(type=SonolusButtonType.CONFIGURATION)
-        ],
-        configuration=SonolusConfiguration(
-            options=[]
-        ),
-        banner=None,
-    )
-
-if __name__ == "__main__":
-    sonolus.run()
-```
-
-このようにして追加することができます。
-
-## アイテムを追加
+## 1) FastAPI直利用（従来）
 
 ```py
 import time
 from fastapi import HTTPException
+
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.items.post import PostItem
-from sonolus_fastapi.model.ServerItemDetails import ServerItemDetails
+from sonolus_fastapi.backend import StorageBackend
+from sonolus_fastapi.utils.context import SonolusContext
+from sonolus_fastapi.utils.session import MemorySessionStore
+from sonolus_models import (
+    PostItem,
+    ServerItemDetails,
+    ServerInfoAuthenticationButton,
+    ServerInfoItemButton,
+    SonolusServerInfo,
+)
+
+sonolus = Sonolus(
+    address="https://example.com",   # 返却される source の基準URL
+    port=8000,
+    dev=True,
+    enable_cors=True,
+    session_store=MemorySessionStore(),
+    backend=StorageBackend.MEMORY,
+)
 
 now = int(time.time() * 1000)
-
-post_item = PostItem(
-    name="example_post",
-    title="Example Post",
-    version=1,
-    author="Author Name",
-    tags=[],
-    description="This is an example post item.",
-    time=now,
-    thumbnail=None,
+sonolus.items.post.add(
+    PostItem(
+        name="example_post",
+        title="Example Post",
+        version=1,
+        author="Author Name",
+        tags=[],
+        description="This is an example post item.",
+        time=now,
+        thumbnail=None,
+    )
 )
-sonolus.items.post.add(post_item) # メモリにPostItemを追加 Add PostItem to memory
 
-@sonolus.post.detail(ServerItemDetails) # Postの詳細ハンドラーを登録 Register Post detail handler
-async def get_post_detail(ctx, name: str): # Postの詳細を取得 Get Post details
-    post = sonolus.items.post.get(name) # メモリからPostItemを取得 Get PostItem from memory
-    
-    if post is None: # PostItemが見つからない場合 If PostItem not found
-        raise HTTPException(404, "Post item not found") # 404エラーを返す Return 404 error
-    
-    return ServerItemDetails( # ServerItemDetailsを返す Return ServerItemDetails
-        item=post, # PostItem
-        description="This is the detail of the example post item.", # 詳細説明 Detail description
-        actions=[], # アクションのリスト List of actions
-        hasCommunity=False, # コミュニティがあるかどうか Whether there is a community
-        leaderboards=[], # リーダーボードのリスト List of leaderboards
-        sections=[], # セクションのリスト List of sections
+@sonolus.server.server_info(SonolusServerInfo)
+async def get_server_info(ctx: SonolusContext):
+    return SonolusServerInfo(
+        title="Example Sonolus Server",
+        description="QuickStart server",
+        buttons=[
+            ServerInfoAuthenticationButton(type="authentication"),
+            ServerInfoItemButton(type="post"),
+        ],
+        configuration=None,
+        banner=None,
+    )
+
+@sonolus.post.detail(ServerItemDetails)
+async def get_post_detail(ctx: SonolusContext, name: str):
+    post = sonolus.items.post.get(name)
+    if post is None:
+        raise HTTPException(404, "Post item not found")
+    return ServerItemDetails(
+        item=post,
+        description="Example post detail",
+        actions=[],
+        hasCommunity=False,
+        leaderboards=[],
+        sections=[],
     )
 
 if __name__ == "__main__":
     sonolus.run()
 ```
 
-## ブラウザでの確認
+## 2) APIRouter組み込み（新仕様）
 
-サーバーを起動し、以下にアクセスをしてみてください。
+```py
+from fastapi import APIRouter, FastAPI
+from sonolus_fastapi import Sonolus
 
+app = FastAPI()
+api_router = APIRouter(prefix="/api")
+
+sonolus = Sonolus(
+    router=api_router,
+    dev=True,
+)
+
+app.include_router(api_router)
 ```
+
+ポイント:
+
+- `router=...` を渡すと、Sonolusルートを既存アプリに統合できます
+- このモードでは `port` や `address` は必須ではありません
+- ルートは `"/api/sonolus/..."` に生えます
+
+## source フィールドの挙動
+
+`BaseItem.source` は以下の仕様です。
+
+- ストレージ（memory/json/database）には保存しません
+- レスポンス生成時に動的に上書きします
+- 上書き値は `Sonolus.address`（未設定時は現在のリクエストURL）
+
+## 動作確認
+
+standalone モード:
+
+```text
 http://localhost:8000/sonolus/info
-http://localhost:8000/sonolus/posts/example
+http://localhost:8000/sonolus/posts/example_post
 ```
 
-JSONが返ってきたら成功です。
+router モード（prefix=/api の場合）:
 
-次は仕様書を見てみましょう。
+```text
+http://localhost:8000/api/sonolus/info
+```
+
+## 次に読む
+
+- [仕様書トップ](/Specifications/)
+- [Handlerの基本ルール](/Specifications/Handlers)
+- [総合サンプル (Examples)](/Specifications/Examples)
+- [ストレージ仕様](/Specifications/Storage)

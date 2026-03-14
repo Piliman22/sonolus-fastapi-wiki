@@ -2,6 +2,9 @@
 
 Community APIは、アイテムに対するコメント機能を提供します。
 
+> パスは基本形 `/sonolus/...` で記載しています。
+> `APIRouter(prefix="/api")` で統合した場合は `/api/sonolus/...` になります。
+
 ## info
 
 コミュニティ情報を提供します

@@ -8,28 +8,33 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: '仕様書', link: '/Specifications' }
+      { text: 'Quick Start', link: '/QuickStart/' },
+      { text: '仕様書', link: '/Specifications/' },
+      { text: 'Examples', link: '/Specifications/Examples' }
     ],
 
     sidebar: [
       {
-        text: '説明',
+        text: 'はじめに',
         items: [
-          { text: 'クイックスタート', link: '/QuickStart' },
+          { text: 'ホーム', link: '/' },
+          { text: 'クイックスタート', link: '/QuickStart/' },
+          { text: 'Examples', link: '/Specifications/Examples' },
         ]
       },
       {
-        text: '仕様書',
+        text: '設計と基本',
         items: [
-          { text: '概要', link: '/Specifications' },
+          { text: '仕様書トップ', link: '/Specifications/' },
           { text: 'ハンドラ', link: '/Specifications/Handlers' },
         ]
       },
       {
-        text: 'Basic API',
+        text: 'Core API',
         items: [
           { text: 'サーバー', link: '/Specifications/Server' },
           { text: 'アイテム', link: '/Specifications/Items' },
+          { text: 'リザルト', link: '/Specifications/Result' },
         ]
       },
       {
@@ -37,7 +42,6 @@ export default defineConfig({
         items: [
           { text: 'コミュニティ', link: '/Specifications/Community' },
           { text: 'リーダーボード', link: '/Specifications/Leaderboard' },
-          { text: 'リザルト', link: '/Specifications/Result' },
         ]
       },
       {
@@ -48,16 +52,10 @@ export default defineConfig({
           { text: 'SPA配信', link: '/Specifications/SPA' },
         ]
       },
-      {
-        text: 'リソース',
-        items: [
-          { text: '例', link: '/Specifications/Examples' },
-        ]
-      }
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/Untitled-Sekai/sonolus-fastapi' }
+      { icon: 'github', link: 'https://github.com/Piliman22/sonolus-fastapi/' }
     ]
   }
 })

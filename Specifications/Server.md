@@ -2,6 +2,9 @@
 
 Server handler は、サーバー全体に関わる API を定義します。
 
+> パスは基本形 `/sonolus/...` で記載しています。
+> `APIRouter(prefix="/api")` で統合した場合は `/api/sonolus/...` になります。
+
 ## server_info
 
 サーバーの基本情報を返します。
@@ -12,7 +15,13 @@ Server handler は、サーバー全体に関わる API を定義します。
 ### Registration
 ```py
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.base import SonolusServerInfo, SonolusConfiguration, SonolusButton, SonolusButtonType
+from sonolus_models import (
+    SonolusServerInfo,
+    SonolusConfiguration,
+    ServerInfoAuthenticationButton,
+    ServerInfoItemButton,
+    ServerInfoConfigurationButton,
+)
 
 sonolus = Sonolus(
     address='https://example.com',
@@ -27,15 +36,15 @@ async def get_server_info(ctx):
         title="Example Sonolus Server",
         description="This is an example Sonolus server.",
         buttons=[
-            SonolusButton(type=SonolusButtonType.AUTHENTICATION),
-            SonolusButton(type=SonolusButtonType.POST),
-            SonolusButton(type=SonolusButtonType.LEVEL),
-            SonolusButton(type=SonolusButtonType.SKIN),
-            SonolusButton(type=SonolusButtonType.BACKGROUND),
-            SonolusButton(type=SonolusButtonType.EFFECT),
-            SonolusButton(type=SonolusButtonType.PARTICLE),
-            SonolusButton(type=SonolusButtonType.ENGINE),
-            SonolusButton(type=SonolusButtonType.CONFIGURATION)
+            ServerInfoAuthenticationButton(type='authentication'),
+            ServerInfoItemButton(type='post'),
+            ServerInfoItemButton(type='level'),
+            ServerInfoItemButton(type='skin'),
+            ServerInfoItemButton(type='background'),
+            ServerInfoItemButton(type='effect'),
+            ServerInfoItemButton(type='particle'),
+            ServerInfoItemButton(type='engine'),
+            ServerInfoConfigurationButton(type='configuration'),
         ],
         configuration=SonolusConfiguration(
             options=[]
@@ -63,7 +72,7 @@ async def get_server_info(ctx):
 ### Registration
 ```py
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.Response.authenticate import ServerAuthenticateResponse
+from sonolus_models import ServerAuthenticateResponse
 from sonolus_fastapi.utils.generate import generate_random_string
 import time
 

@@ -2,6 +2,9 @@
 
 Item handler は、ItemType ごとの API を定義します。
 
+> パスは基本形 `/sonolus/...` で記載しています。
+> `APIRouter(prefix="/api")` で統合した場合は `/api/sonolus/...` になります。
+
 ## info
 
 アイテムのinfoを提供します。
@@ -12,7 +15,7 @@ path: `GET` `/sonolus/{item_type}/info`
 
 ```py
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.ServerItemInfo import ServerItemInfo
+from sonolus_models import ServerItemInfo
 
 sonolus = Sonolus(
     address='https://example.com',
@@ -34,7 +37,7 @@ path: `GET` `/sonolus/{item_type}/list`
 
 ```py
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.ServerItemList import ServerItemList
+from sonolus_models import ServerItemList
 
 sonolus = Sonolus(
     address='https://example.com',
@@ -56,7 +59,7 @@ path: `GET` `/sonolus/{item_type}/{item_name}`
 
 ```py
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.ServerItemDetails import ServerItemDetails
+from sonolus_models import ServerItemDetails
 
 sonolus = Sonolus(
     address='https://example.com',
@@ -78,6 +81,12 @@ async def level_detail(ctx, name: str):
         sections=[]
     )
 ```
+
+### source フィールドについて
+
+- `item.source` は保存時にストレージへ永続化されません
+- レスポンス返却時に `Sonolus.address`（未設定時はリクエストURL）で動的上書きされます
+- 開発/本番でURLが変わっても、データ移行なしで柔軟に対応できます
 
 ## actions
 

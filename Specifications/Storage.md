@@ -17,13 +17,20 @@ Sonolusのアイテム情報などを保存する機能です。
 - **Community Comments**: アイテムごとのコメント
 - **Leaderboard Records**: リーダーボードのレコード
 
+## source フィールドの保存仕様
+
+`BaseItem.source` はストレージに保存されません。
+返却時のみ、`Sonolus.address`（未設定ならリクエストURL）で動的に上書きされます。
+
+これは、開発環境・本番環境・プロキシ環境で配信URLが変わるケースを想定した仕様です。
+
 ## Memory
 
 ```py
 import time
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.items import PostItem
-from sonolus_fastapi.model.sections import PostSection
+from sonolus_fastapi.backend import StorageBackend
+from sonolus_models import PostItem
 
 sonolus = Sonolus(
     address="https://example.com",
@@ -50,8 +57,8 @@ sonolus.items.post.add(new_post)
 ```py
 import time
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.items import PostItem
-from sonolus_fastapi.model.sections import PostSection
+from sonolus_fastapi.backend import StorageBackend
+from sonolus_models import PostItem
 
 sonolus = Sonolus(
     address="https://example.com",
@@ -59,7 +66,7 @@ sonolus = Sonolus(
     dev=False,
     enable_cors=True,
     backend=StorageBackend.JSON,
-    backend_options={"path": "./data"}   
+    path="./data"
 )
 
 now = int(time.time() * 1000) # to milliseconds
@@ -80,16 +87,16 @@ sonolus.items.post.add(new_post)
 ```py
 import time
 from sonolus_fastapi import Sonolus
-from sonolus_fastapi.model.items import PostItem
-from sonolus_fastapi.model.sections import PostSection
+from sonolus_fastapi.backend import StorageBackend
+from sonolus_models import PostItem
 
 sonolus = Sonolus(
     address="https://example.com",
     port=8000,
     dev=False,
     enable_cors=True,
-    backend=StorageBackend.DATABASE, 
-    backend_options={"url": "sqlite:////data/sonolus.db"}
+    backend=StorageBackend.DATABASE,
+    url="sqlite:////data/sonolus.db"
 )
 
 now = int(time.time() * 1000) # to milliseconds
@@ -112,7 +119,8 @@ sonolus.items.post.add(new_post)
 ### Memory
 
 ```py
-from sonolus_fastapi import Sonolus, StorageBackend
+from sonolus_fastapi import Sonolus
+from sonolus_fastapi.backend import StorageBackend
 from sonolus_models import ServerItemCommunityComment
 import time
 
@@ -144,7 +152,8 @@ comments = store.list(limit=10, offset=0)
 データ構造: `data/comments/{item_type}/{item_name}.json`
 
 ```py
-from sonolus_fastapi import Sonolus, StorageBackend
+from sonolus_fastapi import Sonolus
+from sonolus_fastapi.backend import StorageBackend
 
 sonolus = Sonolus(
     address="https://example.com",
@@ -163,7 +172,8 @@ store.add(comment)
 テーブル: `comments` (parent_type, parent_name, time でインデックス)
 
 ```py
-from sonolus_fastapi import Sonolus, StorageBackend
+from sonolus_fastapi import Sonolus
+from sonolus_fastapi.backend import StorageBackend
 
 sonolus = Sonolus(
     address="https://example.com",
@@ -184,7 +194,8 @@ store.add(comment)
 ### Memory
 
 ```py
-from sonolus_fastapi import Sonolus, StorageBackend
+from sonolus_fastapi import Sonolus
+from sonolus_fastapi.backend import StorageBackend
 from sonolus_models import ServerItemLeaderboardRecord
 
 sonolus = Sonolus(
@@ -215,7 +226,8 @@ records = store.list(limit=10, offset=0)
 データ構造: `data/leaderboards/{item_type}/{item_name}/{leaderboard_name}.json`
 
 ```py
-from sonolus_fastapi import Sonolus, StorageBackend
+from sonolus_fastapi import Sonolus
+from sonolus_fastapi.backend import StorageBackend
 
 sonolus = Sonolus(
     address="https://example.com",
@@ -234,7 +246,8 @@ store.add(record)
 テーブル: `leaderboard_records` (parent_type, parent_name, leaderboard_name, rank でインデックス)
 
 ```py
-from sonolus_fastapi import Sonolus, StorageBackend
+from sonolus_fastapi import Sonolus
+from sonolus_fastapi.backend import StorageBackend
 
 sonolus = Sonolus(
     address="https://example.com",

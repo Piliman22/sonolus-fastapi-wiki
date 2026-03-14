@@ -2,6 +2,9 @@
 
 Leaderboard APIは、アイテムに対するリーダーボード機能を提供します。
 
+> パスは基本形 `/sonolus/...` で記載しています。
+> `APIRouter(prefix="/api")` で統合した場合は `/api/sonolus/...` になります。
+
 ## detail
 
 リーダーボード詳細を提供します
